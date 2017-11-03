@@ -7,14 +7,15 @@
   </head>
 
   <body>
-    <ftd-viewer folder="./resources/models/sign/" fbx="Bord.fbx" albedo-map="lambert1_Base_Color.png" normal-map="lambert1_Normal.png" ao-map="lambert1_Mixed_AO.png"></ftd-viewer>
-    <!-- <ftd-viewer folder="./resources/models/car/" fbx="autootje.fbx"></ftd-viewer> -->
+    <!--https://www.youtube.com/watch?v=hznxFmnB2to Export with embeded textures-->
+    <ftd-viewer fbx="./resources/models/hop/hop.fbx"></ftd-viewer>
   </body>
 
   <script type="text/javascript" src="resources/scripts/three/three.js"></script>
   <script type="text/javascript" src="resources/scripts/three/Detector.js"></script>
   <script type="text/javascript" src="resources/scripts/three/OrbitControls.js"></script>
 
+  <script type="text/javascript" src="resources/scripts/inflate.min.js"></script>
   <script type="text/javascript" src="resources/scripts/three/NURBSCurve.js"></script>
   <script type="text/javascript" src="resources/scripts/three/NURBSUtils.js"></script>
   <script type="text/javascript" src="resources/scripts/three/FBXLoader.js"></script>
@@ -22,4 +23,6 @@
   <script type="text/javascript" src="resources/scripts/Mesh.js"></script>
   <script type="text/javascript" src="resources/scripts/Model.js"></script>
   <script type="text/javascript" src="resources/scripts/ftd-3d-view.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="resources/stylesheets/ftd.css">
 </html>

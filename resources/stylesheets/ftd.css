@@ -1,0 +1,73 @@
+.ftd-loader
+{
+  width: 50px;
+  height: 50px;
+
+  border: 10px solid #ffffff44;
+  border-top: .6em solid #222222;
+  border-radius: 50%;
+
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  margin: -25px 0 0 -25px;
+}
+
+.ftd-spin
+{
+  -webkit-animation: spin-anim 1s linear infinite;
+  -moz-animation: spin-anim 1s linear infinite;
+  -ms-animation: spin-anim 1s linear infinite;
+  animation: spin-anim 1s linear infinite;
+}
+
+ftd-viewer .viewer-button
+{
+  position: absolute;
+  width: 100px;
+  height: 40px;
+  background-color: rgba(30, 30, 30, 0.5);
+  top: 30px;
+  right: 10px;
+  text-align: center;
+  border-radius: 10px;
+  color: white;
+  line-height: 40px;
+  cursor: pointer;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+ftd-viewer .viewer-button:hover
+{
+  background-color: rgba(30, 30, 30, 0.8);
+}
+
+@-webkit-keyframes spin-anim
+{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@-moz-keyframes spin-anim
+{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@-ms-keyframes spin-anim
+{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@keyframes spin-anim
+{
+  0%{transform: rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}

@@ -16,8 +16,7 @@ window.addEventListener('load', ()=>
     var keyLight = null;
     var fillLight = null;
     var backLight = null;
-    const halfWindowWidth = window.innerWidth / 2;
-    const halfWindowHeight = window.innerHeight / 2;
+    var model = null;
 
     function init()
     {
@@ -27,23 +26,17 @@ window.addEventListener('load', ()=>
       document.body.style.background = "#333333ff";
 
       container = document.getElementsByTagName('ftd-viewer')[0];
-      const fbxPath = container.getAttribute('folder') + container.getAttribute('fbx');
-      if(fbxPath == null)
-      {
-        console.error('Could not find FBX file, please use the `fbx` attribute in your ftd-viewer!');
-        return;
-      }
 
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.z = 15;
+      camera.position.z = 10;
       camera.lookAt(new THREE.Vector3(0, 0, 0));
 
       var pointLight = new THREE.PointLight(0xffffff, 1, 100);
       pointLight.position.set(10, 10, 10);
       scene.add(pointLight);
 
-      ambient = new THREE.AmbientLight(0xffffff, 0.3);
+      ambient = new THREE.AmbientLight(0xffffff, 0.5);
       scene.add(ambient);
 
       renderer = new THREE.WebGLRenderer();
@@ -55,36 +48,62 @@ window.addEventListener('load', ()=>
       controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.25;
-      controls.enableZoom = false;
+      controls.enableZoom = true;
 
+      loadModel();
+      createControls();
+      render();
+    }
+
+    function loadModel()
+    {
+      const fbxPath = container.getAttribute('fbx');
+      if(fbxPath == null)
+      {
+        console.error('Could not find FBX file, please use the `fbx` attribute in your ftd-viewer!');
+        return;
+      }
 
       const fbxLoader = new THREE.FBXLoader();
       fbxLoader.load(fbxPath, (object)=>
       {
         const meshes = [];
+
         object.traverse((child)=>
         {
-          if (child instanceof THREE.Mesh)
-          {
-            const mesh = new Mesh(child, container.attributes);
-            meshes.push(mesh);
-          }
+          if(child instanceof THREE.Mesh)
+            meshes.push(new Mesh(child));
         });
-        const model = new Model(meshes);
+        model = new Model(meshes);
         scene.add(model.object);
+      },
+      (progress)=>
+      {
+        console.log(progress.loaded/progress.total*100);
+      },
+      (error)=>
+      {
+        console.log(error);
       });
-
-      render();
     }
 
-    function onLoad(load)
+    function createControls()
     {
-      console.log(load);
-    }
+      const text = document.createElement('div');
+      text.style.position = "absolute";
+      text.style.top = "40px";
+      text.style.left = "50%";
+      text.style.color = "white";
+      container.appendChild(text);
 
-    function onError(error)
-    {
-      console.error("something went wrong :(");
+      const viewButton = document.createElement('div');
+      viewButton.setAttribute('class', "viewer-button");
+      viewButton.innerHTML = "texture";
+      viewButton.addEventListener('click', ()=>
+      {
+        text.innerHTML = model.changeMaterial();
+      });
+      container.appendChild(viewButton);
     }
 
     function render()

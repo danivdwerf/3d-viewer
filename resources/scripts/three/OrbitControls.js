@@ -13,11 +13,10 @@
 //    Zoom - middle mouse, or mousewheel / touch: two finger spread or squish
 //    Pan - right mouse, or arrow keys / touch: three finger swipe
 
-THREE.OrbitControls = function ( object, domElement ) {
-
+THREE.OrbitControls = function (object, domElement)
+{
 	this.object = object;
-
-	this.domElement = ( domElement !== undefined ) ? domElement : document;
+	this.domElement = (domElement !== undefined) ? domElement : document;
 
 	// Set to false to disable this control
 	this.enabled = true;
@@ -84,28 +83,25 @@ THREE.OrbitControls = function ( object, domElement ) {
 	// public methods
 	//
 
-	this.getPolarAngle = function () {
-
+	this.getPolarAngle = function ()
+	{
 		return spherical.phi;
-
 	};
 
-	this.getAzimuthalAngle = function () {
-
+	this.getAzimuthalAngle = function ()
+	{
 		return spherical.theta;
-
 	};
 
-	this.saveState = function () {
-
+	this.saveState = function ()
+	{
 		scope.target0.copy( scope.target );
 		scope.position0.copy( scope.object.position );
 		scope.zoom0 = scope.object.zoom;
-
 	};
 
-	this.reset = function () {
-
+	this.reset = function ()
+	{
 		scope.target.copy( scope.target0 );
 		scope.object.position.copy( scope.position0 );
 		scope.object.zoom = scope.zoom0;
@@ -116,12 +112,11 @@ THREE.OrbitControls = function ( object, domElement ) {
 		scope.update();
 
 		state = STATE.NONE;
-
 	};
 
 	// this method is exposed, but perhaps it would be better if we can make it private...
-	this.update = function () {
-
+	this.update = function ()
+	{
 		var offset = new THREE.Vector3();
 
 		// so camera.up is the orbit axis
@@ -131,23 +126,16 @@ THREE.OrbitControls = function ( object, domElement ) {
 		var lastPosition = new THREE.Vector3();
 		var lastQuaternion = new THREE.Quaternion();
 
-		return function update() {
-
+		return function update()
+		{
 			var position = scope.object.position;
-
 			offset.copy( position ).sub( scope.target );
-
 			// rotate offset to "y-axis-is-up" space
 			offset.applyQuaternion( quat );
-
 			// angle from z-axis around y-axis
 			spherical.setFromVector3( offset );
-
-			if ( scope.autoRotate && state === STATE.NONE ) {
-
-				rotateLeft( getAutoRotationAngle() );
-
-			}
+			if (scope.autoRotate && state === STATE.NONE)
+				rotateLeft(getAutoRotationAngle());
 
 			spherical.theta += sphericalDelta.theta;
 			spherical.phi += sphericalDelta.phi;
@@ -178,16 +166,13 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 			scope.object.lookAt( scope.target );
 
-			if ( scope.enableDamping === true ) {
-
+			if (scope.enableDamping === true)
+			{
 				sphericalDelta.theta *= ( 1 - scope.dampingFactor );
 				sphericalDelta.phi *= ( 1 - scope.dampingFactor );
-
-			} else {
-
-				sphericalDelta.set( 0, 0, 0 );
-
 			}
+			else
+				sphericalDelta.set( 0, 0, 0 );
 
 			scale = 1;
 			panOffset.set( 0, 0, 0 );
@@ -196,28 +181,20 @@ THREE.OrbitControls = function ( object, domElement ) {
 			// min(camera displacement, camera rotation in radians)^2 > EPS
 			// using small-angle approximation cos(x/2) = 1 - x^2 / 8
 
-			if ( zoomChanged ||
-				lastPosition.distanceToSquared( scope.object.position ) > EPS ||
-				8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS ) {
-
+			if (zoomChanged || lastPosition.distanceToSquared( scope.object.position ) > EPS || 8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS )
+			{
 				scope.dispatchEvent( changeEvent );
-
 				lastPosition.copy( scope.object.position );
 				lastQuaternion.copy( scope.object.quaternion );
 				zoomChanged = false;
-
 				return true;
-
 			}
-
 			return false;
-
 		};
-
 	}();
 
-	this.dispose = function () {
-
+	this.dispose = function ()
+	{
 		scope.domElement.removeEventListener( 'contextmenu', onContextMenu, false );
 		scope.domElement.removeEventListener( 'mousedown', onMouseDown, false );
 		scope.domElement.removeEventListener( 'wheel', onMouseWheel, false );
@@ -232,7 +209,6 @@ THREE.OrbitControls = function ( object, domElement ) {
 		window.removeEventListener( 'keydown', onKeyDown, false );
 
 		//scope.dispatchEvent( { type: 'dispose' } ); // should this be added here?
-
 	};
 
 	//
@@ -758,9 +734,10 @@ THREE.OrbitControls = function ( object, domElement ) {
 
 	}
 
-	function onMouseWheel( event ) {
-
-		if ( scope.enabled === false || scope.enableZoom === false || ( state !== STATE.NONE && state !== STATE.ROTATE ) ) return;
+	function onMouseWheel(event)
+	{
+		if (scope.enabled === false || scope.enableZoom === false || (state !== STATE.NONE && state !== STATE.ROTATE))
+			return;
 
 		event.preventDefault();
 		event.stopPropagation();

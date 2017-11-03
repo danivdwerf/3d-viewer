@@ -1,98 +1,68 @@
 class Mesh
 {
-  constructor(mesh, info)
+  constructor(mesh)
   {
     this.mesh = mesh;
     this.name = mesh.name;
-    this.info = info;
-
-    this.albedoMap = null;
-    this.normalMap = null;
-    this.heightMap = null;
-    this.aoMap = null;
-    this.specularMap = null;
-
-    this.setMaterial();
+    this.material = mesh.material;
+    this.index = 0;
+    this.textureNames = [];
+    this.textures = [];
+    this.setTextures();
   }
 
-  setMaterial()
+  setOriginalMaterial()
   {
-    this.mesh.material = new THREE.MeshPhongMaterial({color: 0xffffff});
+    this.mesh.material = this.material;
     this.mesh.material.needsUpdate = true;
-    this.loadTextures();
   }
 
-  loadTextures()
+  setTextures()
   {
-    const folder = this.info['folder'].value || null;
-    if(folder == null)
+    this.albedo = this.material.map || null;
+    this.normal = this.material.normalMap || null;
+    this.ao = this.material.aoMap || null;
+    this.specular = this.material.specularMap || null;
+
+    if(this.material.map != null)
     {
-      console.error("Folder attribute not specified, textures won't be loaded");
-      return;
+      this.textures.push(this.material.map);
+      this.textureNames.push("Albedo");
     }
 
-    var albedofile = null;
-    var normalfile = null;
-    var aofile = null;
-    var heightfile = null;
-    var specularfile = null;
-
-    var temp = null
-    if(!(temp = this.info['albedo-map']))
-      albedofile = this.name+"_albedo.png";
-    else
-      albedofile = temp.value;
-
-    if(!(temp = this.info['normal-map']))
-      normalfile = this.name+"_normal.png";
-    else
-      normalfile = temp.value;
-
-    if(!(temp = this.info['ao-map']))
-      aofile = this.name+"_ao.png";
-    else
-      aofile = temp.value;
-
-    if(!(temp = this.info['height-map']))
-      heightfile = this.name+"_height.png";
-    else
-      heightfile = temp.value;
-
-    if(!(temp = this.info['specular-map']))
-      specularfile = this.name+"_specular.png";
-    else
-      specularfile = temp.value;
-
-    const loader = new THREE.TextureLoader();
-
-    loader.load(folder+albedofile, (texture)=>
+    if(this.material.normalMap != null)
     {
-      this.mesh.material.map = texture;
-      this.mesh.material.needsUpdate = true;
-    });
+      this.textures.push(this.material.normalMap);
+      this.textureNames.push("Normal");
+    }
 
-    loader.load(folder+normalfile, (texture)=>
+    if(this.material.aoMap != null)
     {
-      this.mesh.material.normalMap = texture;
-      this.mesh.material.needsUpdate = true;
-    });
+      this.textures.push(this.material.aoMap);
+      this.textureNames.push("Ambient Occlusion");
+    }
 
-    loader.load(folder+heightfile, (texture)=>
+    if(this.material.specularMap != null)
     {
-      this.mesh.material.displacementMap = texture;
-      this.mesh.material.needsUpdate = true;
-    });
+      this.textures.push(this.material.specularMap);
+      this.textureNames.push("Specular");
+    }
+  }
 
-    loader.load(folder+aofile, (texture)=>
+  changeMaterial()
+  {
+    const tex = this.textures[this.index];
+    const mat = new THREE.MeshPhongMaterial({color: 0xffffff, map: tex});
+    this.mesh.material = mat;
+    this.mesh.material.needsUpdate = true;
+    this.index++;
+    if(this.index > this.textures.length)
     {
-      this.mesh.material.aoMap = texture;
-      this.mesh.material.needsUpdate = true;
-    });
+      this.setOriginalMaterial();
+      this.index = 0;
+      return "Original";
+    }
 
-    loader.load(folder+specularfile, (texture)=>
-    {
-      this.mesh.material.specularMap = texture;
-      this.mesh.material.needsUpdate = true;
-    });
+    return this.textureNames[this.index-1];
   }
 };
