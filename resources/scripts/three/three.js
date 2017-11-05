@@ -9739,7 +9739,7 @@
 		function remove( attribute ) {
 
 			if ( attribute.isInterleavedBufferAttribute ) attribute = attribute.data;
-			
+
 			var data = buffers[ attribute.uuid ];
 
 			if ( data ) {
@@ -18435,7 +18435,7 @@
 
 		function clampToMaxSize( image, maxSize ) {
 
-			if ( image.width > maxSize || image.height > maxSize ) {
+			if ( image.width >= maxSize || image.height >= maxSize ) {
 
 				// Warning: Scaling through the canvas will only work with images that use
 				// premultiplied alpha.
@@ -20762,7 +20762,7 @@
 			}
 
 			scope.numPlanes = nPlanes;
-			
+
 			return dstArray;
 
 		}

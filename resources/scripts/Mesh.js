@@ -9,11 +9,41 @@ class Mesh
     this.textureNames = [];
     this.textures = [];
     this.setTextures();
+    this.setOriginalMaterial();
   }
 
   setOriginalMaterial()
   {
-    this.mesh.material = this.material;
+    const mat = new THREE.MeshPhongMaterial({color: 0xffffff, map: this.albedo, normalMap: this.normal, aoMap: this.ao, specularMap: this.specular});
+    this.mesh.material = mat;
+    this.mesh.material.needsUpdate = true;
+  }
+
+  setNormalMat()
+  {
+    const mat = new THREE.MeshPhongMaterial({color: 0xffffff, map: this.normal, normalMap: this.normal});
+    this.mesh.material = mat;
+    this.mesh.material.needsUpdate = true;
+  }
+
+  setAlbedoMat()
+  {
+    const mat = new THREE.MeshPhongMaterial({color: 0xffffff, map: this.albedo});
+    this.mesh.material = mat;
+    this.mesh.material.needsUpdate = true;
+  }
+
+  setSpecularMat()
+  {
+    const mat = new THREE.MeshPhongMaterial({color: 0x000000, map: this.specular, specularMap: this.specular});
+    this.mesh.material = mat;
+    this.mesh.material.needsUpdate = true;
+  }
+
+  setAOMat()
+  {
+    const mat = new THREE.MeshPhongMaterial({color: 0x000000, map: this.ao, aoMap: this.ao});
+    this.mesh.material = mat;
     this.mesh.material.needsUpdate = true;
   }
 
@@ -23,46 +53,5 @@ class Mesh
     this.normal = this.material.normalMap || null;
     this.ao = this.material.aoMap || null;
     this.specular = this.material.specularMap || null;
-
-    if(this.material.map != null)
-    {
-      this.textures.push(this.material.map);
-      this.textureNames.push("Albedo");
-    }
-
-    if(this.material.normalMap != null)
-    {
-      this.textures.push(this.material.normalMap);
-      this.textureNames.push("Normal");
-    }
-
-    if(this.material.aoMap != null)
-    {
-      this.textures.push(this.material.aoMap);
-      this.textureNames.push("Ambient Occlusion");
-    }
-
-    if(this.material.specularMap != null)
-    {
-      this.textures.push(this.material.specularMap);
-      this.textureNames.push("Specular");
-    }
-  }
-
-  changeMaterial()
-  {
-    const tex = this.textures[this.index];
-    const mat = new THREE.MeshPhongMaterial({color: 0xffffff, map: tex});
-    this.mesh.material = mat;
-    this.mesh.material.needsUpdate = true;
-    this.index++;
-    if(this.index > this.textures.length)
-    {
-      this.setOriginalMaterial();
-      this.index = 0;
-      return "Original";
-    }
-
-    return this.textureNames[this.index-1];
   }
 };

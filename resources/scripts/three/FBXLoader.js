@@ -521,7 +521,7 @@
 
 				case 'DiffuseColor':
 				case ' "DiffuseColor':
-					parameters.map = textureMap.get( relationship.ID );
+					parameters.map = textureMap.get(relationship.ID);
 					break;
 
 				case 'Bump':
@@ -532,6 +532,17 @@
 				case 'NormalMap':
 				case ' "NormalMap':
 					parameters.normalMap = textureMap.get( relationship.ID );
+					break;
+
+				case 'TransparencyFactor':
+				case ' "TransparencyFactor':
+					parameters.map = textureMap.get( relationship.ID );
+					parameters.transparent = true;
+					break;
+
+				case 'SpecularColor':
+				case ' "SpecularColor':
+					parameters.specularMap = textureMap.get( relationship.ID );
 					break;
 
 				case 'AmbientColor':

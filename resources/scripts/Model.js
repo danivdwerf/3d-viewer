@@ -11,12 +11,33 @@ class Model
       this.object.add(this.meshes[i].mesh);
   }
 
-  changeMaterial()
+  showOriginal()
   {
-    var texturetype = "";
     for(let i = 0; i < this.amountOfMeshes; i++)
-      texturetype = this.meshes[i].changeMaterial();
+      this.meshes[i].setOriginalMaterial();
+  }
 
-    return texturetype;
+  showNormal()
+  {
+    for(let i = 0; i < this.amountOfMeshes; i++)
+      this.meshes[i].setNormalMat();
+  }
+
+  showAlbedo()
+  {
+    for(let i = 0; i < this.amountOfMeshes; i++)
+      this.meshes[i].setAlbedoMat();
+  }
+
+  showSpecular()
+  {
+    for(let i = 0; i < this.amountOfMeshes; i++)
+      this.meshes[i].setSpecularMat();
+  }
+
+  showAO()
+  {
+    for(let i = 0; i < this.amountOfMeshes; i++)
+      this.meshes[i].setAOMat();
   }
 };

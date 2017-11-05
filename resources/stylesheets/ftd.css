@@ -1,16 +1,26 @@
 .ftd-loader
 {
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
 
+  -webkit-border: 10px solid #ffffff44;
+  -moz-border: 10px solid #ffffff44;
   border: 10px solid #ffffff44;
   border-top: .6em solid #222222;
-  border-radius: 50%;
+
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  border-radius: 100px;
 
   top: 50%;
   left: 50%;
   position: absolute;
   margin: -25px 0 0 -25px;
+}
+
+.hide
+{
+  display: none;
 }
 
 .ftd-spin
@@ -21,18 +31,17 @@
   animation: spin-anim 1s linear infinite;
 }
 
-ftd-viewer .viewer-button
+ftd-viewer .texture-nav-label
 {
   position: absolute;
-  width: 100px;
+  padding: 5px;
+  margin: 0;
+
+  top: 20px;
+  right: 20px;
+  width: 40px;
   height: 40px;
-  background-color: rgba(30, 30, 30, 0.5);
-  top: 30px;
-  right: 10px;
-  text-align: center;
-  border-radius: 10px;
-  color: white;
-  line-height: 40px;
+
   cursor: pointer;
 
   -webkit-touch-callout: none;
@@ -41,11 +50,56 @@ ftd-viewer .viewer-button
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: 4px;
 }
 
-ftd-viewer .viewer-button:hover
+ftd-viewer .texture-nav-label img
 {
-  background-color: rgba(30, 30, 30, 0.8);
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+ftd-viewer #texture-nav-check:checked ~ .texture-navigation
+{display: none !important;}
+
+ftd-viewer .texture-navigation
+{
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 200px;
+  display: block;
+}
+
+ftd-viewer .texture-nav-button:hover
+{
+  background-color: rgba(60, 60, 60, .8);
+}
+
+ftd-viewer .texture-nav-button
+{
+  color: white;
+  background-color: rgba(40, 40, 40, .8);
+  text-align: center;
+  height: 30px;
+  margin: 3px auto;
+  line-height: 30px;
+  box-sizing: border-box;
+  width: 80%;
+  display: block;
+  border-radius: 2px;
+  cursor: pointer;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 @-webkit-keyframes spin-anim
