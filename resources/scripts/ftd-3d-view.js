@@ -18,6 +18,7 @@ window.addEventListener('load', ()=>
   var backLight = null;
   var model = null;
   var ui = null;
+  var mainLight = null, fillLight = null, backLight = null;
   var center = null;
   const loader = document.createElement('div');
 
@@ -37,6 +38,18 @@ window.addEventListener('load', ()=>
     ui.normalButton.addEventListener('click', ()=>{model.showNormal();});
     ui.specularButton.addEventListener('click', ()=>{model.showSpecular();});
     ui.aoButton.addEventListener('click', ()=>{model.showAO();});
+
+    ui.lightButton.addEventListener('click', ()=>
+    {
+      const mainIntensity = mainLight.intensity;
+      const ambientIntensity = ambient.intensity;
+
+      mainLight.setIntensity(ambientIntensity);
+      fillLight.setIntensity(ambientIntensity);
+      backLight.setIntensity(ambientIntensity);
+
+      ambient.intensity = mainIntensity;
+    });
   }
 
   function init()
@@ -45,6 +58,13 @@ window.addEventListener('load', ()=>
     document.body.appendChild(loader);
 
     container = document.getElementsByTagName('ftd-viewer')[0];
+    container.addEventListener('dblclick', (e)=>
+    {
+      e.preventDefault();
+      controls.reset();
+      camera.position.set(center.x, center.y, center.z+50);
+      controls.target.set(center.x, center.y, center.z);
+    });
     setupBody();
     setupDocument();
 
@@ -52,23 +72,20 @@ window.addEventListener('load', ()=>
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 50;
 
-    const pointLight = new THREE.PointLight(0xffffff, 1, 1000);
-    pointLight.position.set(50, 200, 50);
-    scene.add(pointLight);
+    mainLight = new DirectionalLight('hsl(30, 100%, 75%)', 1.0);
+    mainLight.setPosition(-100, 0, 100);
 
-    const pointLight1 = new THREE.PointLight(0xffffff, 1, 1000);
-    pointLight.position.set(50, 200, -50);
-    scene.add(pointLight1);
+    fillLight = new DirectionalLight('hsl(240, 100%, 75%)', 1.0);
+    fillLight.setPosition(100, 0, 100);
 
-    const pointLight2 = new THREE.PointLight(0xffffff, 1, 1000);
-    pointLight.position.set(-50, 200, -50);
-    scene.add(pointLight2);
+    backLight = new DirectionalLight(0xffffff, 1.0);
+    backLight.setPosition(100, 0, -100);
 
-    const pointLight3 = new THREE.PointLight(0xffffff, 1, 1000);
-    pointLight.position.set(-50, 200, 50);
-    scene.add(pointLight3);
+    scene.add(mainLight.mesh);
+    scene.add(fillLight.mesh);
+    scene.add(backLight.mesh);
 
-    ambient = new THREE.AmbientLight(0xffffff, 0.1);
+    ambient = new THREE.AmbientLight(0xffffff, 0);
     scene.add(ambient);
 
     renderer = new THREE.WebGLRenderer();
@@ -93,14 +110,6 @@ window.addEventListener('load', ()=>
     render();
   }
 
-  window.addEventListener('dblclick', (e)=>
-  {
-    e.preventDefault();
-    controls.reset();
-    camera.position.set(center.x, center.y, center.z+50);
-    controls.target.set(center.x, center.y, center.z);
-  });
-
   function loadModel()
   {
     const fbxPath = container.getAttribute('fbx');
@@ -119,6 +128,7 @@ window.addEventListener('load', ()=>
         if(child instanceof THREE.Mesh)
           meshes.push(new Mesh(child));
       });
+
       model = new Model(meshes);
       scene.add(model.object);
 
@@ -136,14 +146,10 @@ window.addEventListener('load', ()=>
       camera.position.set(center.x, center.y, center.z+50);
       controls.target.set(center.x, center.y, center.z);
       document.body.removeChild(loader);
-    },
-    (progress)=>
-    {
-      console.log(progress.loaded/progress.total*100);
-    },
+    }, (progress)=>{},
     (error)=>
     {
-      console.log(error);
+      console.error(error);
     });
   }
 

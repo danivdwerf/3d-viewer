@@ -4,11 +4,21 @@ class UI
   {
     this.container = container
     this.createTextureSwitch();
+    this.createLightSwitch();
+  }
+
+  createLightSwitch()
+  {
+    this.lightButton = document.createElement('div');
+    this.lightButton.innerHTML = '<i class="fa fa-lightbulb-o"></i>';
+    this.lightButton.setAttribute('id', "light-nav-button");
+    this.container.appendChild(this.lightButton);
   }
 
   createTextureSwitch()
   {
     const textureNavLabel = document.createElement('label');
+    textureNavLabel.innerHTML = '<i class="fa fa-bars"></i>';
     textureNavLabel.setAttribute('for', "texture-nav-check");
     textureNavLabel.setAttribute('class', "texture-nav-label");
 
@@ -18,19 +28,12 @@ class UI
     textureNavSwitch.setAttribute("id", "texture-nav-check");
     textureNavSwitch.setAttribute("checked", "true");
 
-    const icon = new Image();
-    icon.addEventListener('load', ()=>
-    {
-      textureNavLabel.appendChild(icon);
-    });
-    icon.src = "resources/dropdown-icon.png";
     this.container.appendChild(textureNavLabel);
     this.container.appendChild(textureNavSwitch);
 
     const textureNav = document.createElement('div');
     textureNav.setAttribute('class', "texture-navigation");
     this.container.appendChild(textureNav);
-
 
     this.originalButton = document.createElement('div');
     this.originalButton.setAttribute('class','texture-nav-button');
