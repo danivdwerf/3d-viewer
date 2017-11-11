@@ -72,10 +72,10 @@ window.addEventListener('load', ()=>
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 10000);
     camera.position.z = 50;
 
-    mainLight = new DirectionalLight('hsl(30, 100%, 75%)', 1.0);
+    mainLight = new DirectionalLight(0xffffff, 1.0);
     mainLight.setPosition(-100, 0, 100);
 
-    fillLight = new DirectionalLight('hsl(240, 100%, 75%)', 1.0);
+    fillLight = new DirectionalLight(0xffffff, 1.0);
     fillLight.setPosition(100, 0, 100);
 
     backLight = new DirectionalLight(0xffffff, 1.0);
