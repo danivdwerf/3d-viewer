@@ -154,14 +154,6 @@ window.addEventListener('load', ()=>
     });
   }
 
-  window.addEventListener('keydown', (e)=>
-  {
-      if(e.keyCode == 32)
-      {
-        model.showWireframe();
-      }
-  });
-
   function render()
   {
       requestAnimationFrame(render);
