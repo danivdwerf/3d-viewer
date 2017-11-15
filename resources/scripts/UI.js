@@ -4,6 +4,16 @@ class UI
   {
     this.container = container
     this.navigation = null;
+    this.isFull = false;
+
+    this.iframe = window.frameElement || document.getElementsByTagName('ftd-viewer')[0];
+    const frameStyle = window.getComputedStyle(this.iframe);
+    this.ogWidth = frameStyle.getPropertyValue("width") || "auto";
+    this.ogHeight = frameStyle.getPropertyValue("height") || "auto";
+    this.ogPos = frameStyle.getPropertyValue("position") || "relative";
+    this.ogTop = frameStyle.getPropertyValue("top") || "0";
+    this.ogLeft = frameStyle.getPropertyValue("left") || "0";
+
     this.createNavigation();
     this.createFullscreenSwitch();
     this.createLightSwitch();
@@ -39,7 +49,29 @@ class UI
     fullscreen.setAttribute('id', "fullscreen-nav-button");
     fullscreen.setAttribute('class', "nav-button");
     this.navigation.appendChild(fullscreen);
-    fullscreen.addEventListener('click', ()=>{window.open(document.URL, "_blank", "fullscreen=yes");});
+    fullscreen.addEventListener('click', ()=>
+    {
+      if(!this.isFull)
+      {
+        this.iframe.style.width = "100%";
+        this.iframe.style.height = "100%";
+        this.iframe.style.position = "absolute";
+        this.iframe.style.top = "0";
+        this.iframe.style.left = "0";
+        fullscreen.innerHTML = '<i class="fa fa-compress" aria-hidden="true"></i>';
+        this.isFull = !this.isFull;
+      }
+      else
+      {
+        this.iframe.style.width = this.ogWidth;
+        this.iframe.style.height = this.ogHeight;
+        this.iframe.style.position = this.ogPos;
+        this.iframe.style.top = this.ogTop;
+        this.iframe.style.left = this.ogLeft;
+        fullscreen.innerHTML = '<i class="fa fa-arrows-alt"></i>';
+        this.isFull = !this.isFull;
+      }
+    });
   }
 
   createLightSwitch()
@@ -80,6 +112,11 @@ class UI
     this.aoButton.setAttribute('class','texture-nav-button');
     this.aoButton.innerHTML = "Ambient Occlusion";
     buttons.appendChild(this.aoButton);
+
+    this.wireframeButton = document.createElement('div');
+    this.wireframeButton.setAttribute('class', "texture-nav-button");
+    this.wireframeButton.innerHTML = "Wireframe";
+    buttons.appendChild(this.wireframeButton);
 
     this.navigation.appendChild(buttons);
   }

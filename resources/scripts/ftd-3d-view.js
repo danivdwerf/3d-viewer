@@ -38,6 +38,7 @@ window.addEventListener('load', ()=>
     ui.normalButton.addEventListener('click', ()=>{model.showNormal();});
     ui.specularButton.addEventListener('click', ()=>{model.showSpecular();});
     ui.aoButton.addEventListener('click', ()=>{model.showAO();});
+    ui.wireframeButton.addEventListener('click', ()=>{model.showWireframe();});
 
     ui.lightButton.addEventListener('click', ()=>
     {
@@ -152,6 +153,14 @@ window.addEventListener('load', ()=>
       console.error(error);
     });
   }
+
+  window.addEventListener('keydown', (e)=>
+  {
+      if(e.keyCode == 32)
+      {
+        model.showWireframe();
+      }
+  });
 
   function render()
   {

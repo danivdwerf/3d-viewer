@@ -5,7 +5,7 @@ class Model
     this.name = name;
     this.meshes = meshes;
     this.amountOfMeshes = meshes.length;
-    this.object = new THREE.Object3D();
+    this.object = new THREE.Mesh();
 
     for(let i = 0; i < this.amountOfMeshes; i++)
       this.object.add(this.meshes[i].mesh);
@@ -39,5 +39,11 @@ class Model
   {
     for(let i = 0; i < this.amountOfMeshes; i++)
       this.meshes[i].setAOMat();
+  }
+
+  showWireframe()
+  {
+    for(let i = 0; i < this.amountOfMeshes; i++)
+      this.meshes[i].setWireframe();
   }
 };
