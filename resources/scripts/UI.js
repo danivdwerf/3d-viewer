@@ -55,9 +55,10 @@ class UI
       {
         this.iframe.style.width = "100%";
         this.iframe.style.height = "100%";
-        this.iframe.style.position = "absolute";
+        this.iframe.style.position = "fixed";
         this.iframe.style.top = "0";
         this.iframe.style.left = "0";
+        this.iframe.style.zIndex = "9999";
         fullscreen.innerHTML = '<i class="fa fa-compress" aria-hidden="true"></i>';
         this.isFull = !this.isFull;
       }
