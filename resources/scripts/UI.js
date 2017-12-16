@@ -7,12 +7,6 @@ class UI
     this.isFull = false;
 
     this.iframe = window.frameElement || document.getElementsByTagName('ftd-viewer')[0];
-    const frameStyle = window.getComputedStyle(this.iframe);
-    this.ogWidth = frameStyle.getPropertyValue("width") || "auto";
-    this.ogHeight = frameStyle.getPropertyValue("height") || "auto";
-    this.ogPos = frameStyle.getPropertyValue("position") || "relative";
-    this.ogTop = frameStyle.getPropertyValue("top") || "0";
-    this.ogLeft = frameStyle.getPropertyValue("left") || "0";
 
     this.createNavigation();
     this.createFullscreenSwitch();
@@ -53,6 +47,14 @@ class UI
     {
       if(!this.isFull)
       {
+        const frameStyle = window.getComputedStyle(this.iframe);
+        this.ogWidth = frameStyle.getPropertyValue("width") || "auto";
+        this.ogHeight = frameStyle.getPropertyValue("height") || "auto";
+        this.ogPos = frameStyle.getPropertyValue("position") || "relative";
+        this.ogTop = frameStyle.getPropertyValue("top") || "0";
+        this.ogLeft = frameStyle.getPropertyValue("left") || "0";
+        this.ogzindex = frameStyle.getPropertyValue('z-index') || "1";
+
         this.iframe.style.width = "100%";
         this.iframe.style.height = "100%";
         this.iframe.style.position = "fixed";
@@ -64,11 +66,7 @@ class UI
       }
       else
       {
-        this.iframe.style.width = this.ogWidth;
-        this.iframe.style.height = this.ogHeight;
-        this.iframe.style.position = this.ogPos;
-        this.iframe.style.top = this.ogTop;
-        this.iframe.style.left = this.ogLeft;
+        this.iframe.style = null;
         fullscreen.innerHTML = '<i class="fa fa-arrows-alt"></i>';
         this.isFull = !this.isFull;
       }
@@ -86,6 +84,9 @@ class UI
 
   createTextureSwitch()
   {
+    const scrollingWindow = document.createElement('div');
+    scrollingWindow.setAttribute('id', "scrolling-window");
+
     const buttons = document.createElement('div');
     buttons.setAttribute('id', "texture-buttons");
 
@@ -119,6 +120,7 @@ class UI
     this.wireframeButton.innerHTML = "Wireframe";
     buttons.appendChild(this.wireframeButton);
 
-    this.navigation.appendChild(buttons);
+    scrollingWindow.appendChild(buttons);
+    this.navigation.appendChild(scrollingWindow);
   }
 };
